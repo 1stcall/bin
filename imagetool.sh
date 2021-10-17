@@ -105,7 +105,8 @@ fi
 export NBD_DEV="${NBD_DEV:-/dev/nbd1}"
 export MAP_BOOT_DEV=/dev/mapper/nbd1p1
 export MAP_ROOT_DEV=/dev/mapper/nbd1p2
-source scripts/qcow2_handling
+
+source $(dirname $0)/scripts/qcow2_handling
 
 if [ "${MOUNT}" = "1" ]; then
 	mount_qimage "${IMAGE}" "${MOUNTPOINT}"
