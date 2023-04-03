@@ -26,6 +26,6 @@ function iplookup() {
 }
 
 for ip in $IP_ADDRESS; do
-#    echo "Looking up $ip in $HOST_FILE"
+    echo "Looking up $ip in $HOST_FILE" >&2
     iplookup $HOST_FILE $ip
 done
