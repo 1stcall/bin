@@ -18,9 +18,12 @@ ipList=( \
 commandsToRun=( \
     "export DEBIAN_FRONTEND=noninteractive" \
     "sudo apt-get update" \
-    "sudo apt-get upgrade -y --dry-run" \
-    "sudo apt-get autoremove -y --dry-run" "sudo reboot" )
-
+    "sudo apt-get upgrade -y" \
+    "sudo apt-get autoremove -y" \
+    "sudo shutdown --reboot 1 \"$(hostname) rebooting now!\" || true"  \
+    "exit 0" )
+    #"sudo apt-get upgrade -y --dry-run" \
+    #"sudo apt-get autoremove -y --dry-run" \ 
 sshCommand="ssh -t"
 
 for ipAddress in "${ipList[@]}"
@@ -45,13 +48,11 @@ do
 
     [[ DEBUG -gt 0 ]] && \
         printf "D: runCommand: %s\n" "$runCommand"
-        
+    ret=0
     ${runCommand} || \
         ret=$? && \
-
-        [[ DEBUG -gt 0 ]] && \
+        [[ DEBUG -gt 0 ]] && [[ ret -ne 0 ]] && \
             printf "\nE: \`%s\' returned error: %i.\n" "$runCommand" $ret >&2 && \
-
             [[ DEBUG -eq 5 ]] && \
                 printf "E: %s\n" "Bailing out." && \
                 exit $ret
